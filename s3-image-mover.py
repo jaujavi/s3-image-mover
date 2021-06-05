@@ -15,40 +15,50 @@ def ls_objects_file (bucket_name, file_name):
 		objects_file.write(s3_object.key + '\n')
 
 
+#determine if an object is already copied or not
+def object_moved (object_name, file_name):
+	try:
+		with open(file_name, 'r') as file_moved:
+			if object_name in file_moved.read():
+				return True
+			else:
+				return False
+	except IOError:
+		print('WARN: File', file_name,'not exists. Maibe it is the first execution.\n')
+		return False
+
+
 #copy all objects from a list from one bucket to another
-def cp_objects (bucket_old, file_name, bucket_new):
+def cp_objects (bucket_old, objects_list, bucket_new):
 
-	file_objects = open(file_name, 'r')
-	file_moved = open(newbucket['Moved'],'w')
+	with open(objects_list, 'r') as file_objects:
+		for s3_object in file_objects:
+			s3_object = s3_object.replace('\n', '')
 
-	for s3_object in file_objects:
+			copy_source = {
+				'Bucket': bucket_old,
+				'Key': s3_object
+			}
 
-		s3_object = s3_object.replace('\n', '')
+			if not object_moved(s3_object, newbucket['Moved_Log']):
+				print('COPYING:', copy_source['Bucket'], copy_source['Key'], '=>', bucket_new)
+				start_time_copy = time.time()
 
-		start_time_copy = time.time()
+				try:
+					#s3 = boto3.resource('s3')
+					#bucket = s3.Bucket(bucket_new)
+					#bucket.copy(copy_source, s3_object)
+					print('--- bucket opetation ---')
+				except:
+					print('COPY ERROR =>', copy_source['Key'])
+				else:
+					with open(newbucket['Moved_Log'],'a') as file_moved:
+						file_moved.write(copy_source['Key'] + '\n')
+					print('OBJECT MOVED =>', copy_source['Key'])
 
-		copy_source = {
-			'Bucket': bucket_old,
-			'Key': s3_object
-		}
-
-		print('COPYING:', copy_source['Bucket'], copy_source['Key'], '=>', bucket_new)
-
-		try:
-			#s3 = boto3.resource('s3')
-			#bucket = s3.Bucket(bucket_new)
-			#bucket.copy(copy_source, s3_object)
-			print('--- bucket opetation ---')
-		except:
-			print('COPY ERROR =>', copy_source['Key'])
-		else:
-			file_moved.write(copy_source['Key'] + '\n')
-			print('OBJECT MOVED =>', copy_source['Key'])
-
-		print('Execution time: ' + str((time.time() - start_time_copy)) + '\n')
-
-	file_objects.close()
-	file_moved.close()
+				print('Execution time: ' + str((time.time() - start_time_copy)) + '\n')
+			else:
+				print('WARN: OBJECT ALREADY MOVED ->', s3_object)
 
 
 #---main
@@ -61,7 +71,7 @@ oldbucket = {
 newbucket = {
 	'Name':'jaujavi-newbucket',
 	'File':'s3_newbucket_objects.txt',
-	'Moved':'s3_moved_objects.log'
+	'Moved_Log':'s3_moved_objects.log'
 }
 
 start_time = time.time()

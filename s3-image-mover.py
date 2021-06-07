@@ -121,25 +121,29 @@ def clean_ops(oldbucket, newbucket):
 	else:
 		print('ERROR: Different number of objects detected on both buckets. Please check.')
 
+#main function
+def main():
+	oldbucket = {
+		'Name':'jaujavi-oldbucket',
+		'File':'s3_oldbucket_objects.txt'
+	}
 
-#---main
+	newbucket = {
+		'Name':'jaujavi-newbucket',
+		'File':'s3_newbucket_objects.txt',
+		'Moved_Log':'s3_moved_objects.log'
+	}
 
-oldbucket = {
-	'Name':'jaujavi-oldbucket',
-	'File':'s3_oldbucket_objects.txt'
-}
+	start_time = time.time()
 
-newbucket = {
-	'Name':'jaujavi-newbucket',
-	'File':'s3_newbucket_objects.txt',
-	'Moved_Log':'s3_moved_objects.log'
-}
+	ls_objects_file(oldbucket['Name'],oldbucket['File'])
+	#cp_objects(oldbucket['Name'], oldbucket['File'], newbucket['Name'])
+	ls_objects_file(newbucket['Name'],newbucket['File'])
+	#clean_ops(oldbucket,newbucket)
 
-start_time = time.time()
+	print('\n' + '---TOTAL EXECUTION TIME: ' + str((time.time() - start_time)) + '\n')
 
-ls_objects_file(oldbucket['Name'],oldbucket['File'])
-cp_objects(oldbucket['Name'], oldbucket['File'], newbucket['Name'])
-ls_objects_file(newbucket['Name'],newbucket['File'])
-clean_ops(oldbucket,newbucket)
+if __name__ == "__main__":
+    main()
 
-print('\n' + '---TOTAL EXECUTION TIME: ' + str((time.time() - start_time)) + '\n')
+

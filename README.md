@@ -38,7 +38,7 @@ I have to say that before this challenge I had not programmed in python and this
 
 First of all What I did was create and configure a github account and reactivate my AWS account. I prefer using the real AWS bucket than an emulation tool. Also I created a tagged user with all permission to work with buckets (AmazonS3FullAccess) and with boundary (to control the maximum permissions this user can have).
 
-###My thoughts
+### My thoughts
 
 When I start thinking this challenge my preferences was using ShellScripting (Bash) to programm it casuse I'm more familiarizate with it, but I read that Python and also boto3 module was easier and more powerful than Bash for work against AWS. So, let's do it.
 
@@ -59,7 +59,7 @@ So before code I start [reading](https://aws.amazon.com/premiumsupport/knowledge
 
 6.- Use AWS DataSync: I don't want to sync. Option out of programming. Cost and performance would have to be tested.
 
-###My environment
+### My environment
 - OS: Manjaro
 - Shell: zsh
 - AWS region: eu-west-3
@@ -68,7 +68,7 @@ So before code I start [reading](https://aws.amazon.com/premiumsupport/knowledge
 - Text editor: Sublime text with Markmon
 - 1000 Images: I have downloaded them with a Google Chrome [extension](https://chrome.google.com/webstore/detail/image-downloader-imageye/agionbommeaifngbhincahgmoflcikhm).
 
-###Premises
+### Premises
 Note that in your "oldbucket" you need some objects to work with and the new one has to be empty.
 There is nothing more than JPG images in the bucket.
 Both buckets are from the same account and Standar types.
@@ -76,7 +76,7 @@ There's no ACLs on objects neither versioning.
 Data isn't encrypted.
 Thers's no objects more than 5GB of size.
 
-###Implementig
+### Implementig
 I think that the most important things about this challenge is that if the process fails for any reason it should resume, and it should run as fast as possible. So,let's do it.
 
 To make it possible I develop three principal functions:
@@ -95,7 +95,7 @@ The secuence is:
 - Finally it compares the number of objects from the source bucket with those from the destination bucket. clean al files that it generate, and empty all the objects from the source bucket. Optionally it could delete source bucket.
 - When finished, it will write the total execution time.
 
-###How to run it
+### How to run it
 
 - Configure the user you want to work with buckets:
 ```bash
@@ -110,19 +110,19 @@ $ aws configure
 ```bash
 $ python s3-image-mover.py
 ```
-###Testing
+### Testing
 
 - Copying 1000 objects (JPG files) took arround 6 minutes, between 0,3s and 0,4s each one.
 - When I killed the program and I start it again, it resumes where it left off.
 
-###Future improvements
+### Future improvements
 Python Multitheading.
 Sharding the object list
 Multiple programm execution.
 Compare all objects one by one, not only the number of objects from the buckets.
 PEP8 and pycodestyle python programming best practices.
 
-###Other best practices applied
+### Other best practices applied
 - MFA for AWS sing in.
 - Tagging all objects on AWS.
 - Least privilege principle.

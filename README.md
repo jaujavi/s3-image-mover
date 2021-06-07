@@ -116,11 +116,11 @@ $ python s3-image-mover.py
 - When I killed the program and I start it again, it resumes where it left off.
 
 ### Future improvements
-Python Multitheading.
-Sharding the object list
-Multiple programm execution.
-Compare all objects one by one, not only the number of objects from the buckets.
-PEP8 and pycodestyle python programming best practices.
+- Python Multitheading.
+- Sharding the object list
+- Multiple programm execution.
+- Compare all objects one by one, not only the number of objects from the buckets.
+- PEP8 and pycodestyle python programming best practices.
 
 ### Other best practices applied
 - MFA for AWS sing in.

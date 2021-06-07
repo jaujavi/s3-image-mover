@@ -137,9 +137,9 @@ def main():
 	start_time = time.time()
 
 	ls_objects_file(oldbucket['Name'],oldbucket['File'])
-	#cp_objects(oldbucket['Name'], oldbucket['File'], newbucket['Name'])
+	cp_objects(oldbucket['Name'], oldbucket['File'], newbucket['Name'])
 	ls_objects_file(newbucket['Name'],newbucket['File'])
-	#clean_ops(oldbucket,newbucket)
+	clean_ops(oldbucket,newbucket)
 
 	print('\n' + '---TOTAL EXECUTION TIME: ' + str((time.time() - start_time)) + '\n')
 
